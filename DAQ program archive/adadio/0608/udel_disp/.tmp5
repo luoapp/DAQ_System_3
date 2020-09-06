@@ -1,0 +1,4 @@
+udel_daq.o:
+../udel_comm/udel_daq.c
+../udel_comm/udel_daq.h
+../udel_comm/udel_drv.h

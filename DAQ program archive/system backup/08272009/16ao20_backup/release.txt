@@ -1,0 +1,21 @@
+
+16AO20 Linux Driver Release Notes
+
+Revision History
+================
+
+--------------------------------------------------------------------------------
+
+Version 2.0.7.1 - Released 5/26/2009
+
+- Driver Version: 2.0.7
+- Updated the sbtest application for new firmware mods.
+
+--------------------------------------------------------------------------------
+
+Version 2.0.7.0 - Released 5/19/2009
+
+- Driver Version: 2.0.7
+- This is the first release of the 2.x driver.
+
+--------------------------------------------------------------------------------

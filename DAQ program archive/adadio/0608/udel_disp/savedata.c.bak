@@ -1,0 +1,437 @@
+// $URL: http://subversion:8080/svn/gsc/trunk/drivers/LINUX/ADADIO/ADADIO_Linux_3.x.x.x_GSC_DN/savedata/savedata.c $
+// $Rev: 1620 $
+// $Date: 2009-04-10 11:41:41 -0500 (Fri, 10 Apr 2009) $
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <pthread.h>
+#include <sys/time.h>
+#include "main.h"
+#include "adadio_dsl.h" 
+
+
+// #defines	*******************************************************************
+
+#define	_1M		(1024L * 1024L)
+#define _8M		(80L*1024L*1024L)
+
+// prototype
+//*******************************************************************
+void * save_thread(void * ptr);
+void * save_thread1(void * ptr);
+void * read_thread( void *ptr);
+// variables	***************************************************************
+struct timeval tv;
+static	__u32	_buffer1[_8M], _buffer2[_8M];
+__u32 *savebuffer;
+FILE * savefile;
+long int sec_start, usec_start;
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER, mutex2 = PTHREAD_MUTEX_INITIALIZER;	
+
+/******************************************************************************
+*
+*	Function:	_channels
+*
+*	Purpose:
+*
+*		Check to see how many channels the board has.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*		chan	Report the number of channels here.
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+static int _channels(int fd, __s32* chans)
+{
+	char	buf[64];
+	int		errs	= 0;
+	__s32	last	= -1;
+
+	gsc_label("Input Channels");
+
+	errs	+= adadio_dsl_ioctl(fd, ADADIO_IOCTL_AIN_CHAN_LAST,	&last	);
+
+	if (errs == 0)
+	{
+		chans[0]	= last + 1;
+
+		if (last == 0)
+			sprintf(buf, "# %ld", (long) last);
+		else
+			sprintf(buf, "#s 0-%ld", (long) last);
+
+		printf(	"%ld Channel%s  (%s)\n",
+				(long) chans[0],
+				(chans[0] == 1) ? "" : "s",
+				buf);
+	}
+
+	return(errs);
+}
+
+
+
+/******************************************************************************
+*
+*	Function:	_read_data
+*
+*	Purpose:
+*
+*		Read data into the buffer.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+static int _read_data(int fd, __u32 *buffer)
+{
+	int		errs;
+	long	get		= sizeof(_buffer1) / 4;
+	int		got;
+
+	gsc_label("Reading");
+	got	= adadio_dsl_read(fd, buffer, get);
+
+	if (got < 0)
+	{
+		errs	= 1;
+	}
+	else if (got != get)
+	{
+		errs	= 1;
+		printf(	"FAIL <---  (got %ld samples, requested %ld)\n",
+				(long) got,
+				(long) get);
+	}
+	else
+	{
+		errs	= 0;
+		printf(	"PASS  (%ld samples)\n",
+				(long) get);
+	}
+
+	return(errs);
+}
+
+
+
+/******************************************************************************
+*
+*	Function:	_save_data
+*
+*	Purpose:
+*
+*		Save the read data to a text file.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*		chans	The number of channels.
+*
+*		errs	have there been any errors so far?
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+/*
+static int _save_data(int fd, int chans, int errs)
+{
+	FILE*		file;
+	int			i;
+	long		l;
+	const char*	name	= "/daqsbc/data/data.txt";
+	long		samples	= sizeof(_buffer) / 4;
+
+	gsc_label("Saving");
+	memcpy(savebuffer, _buffer, sizeof(_buffer));
+		
+	for (;;)
+	{
+		if (errs)
+		{
+			printf("SKIPPED  (errors)\n");
+			errs	= 0;
+			break;
+		}
+
+		file	= fopen(name, "a+b");
+
+		if (file == NULL)
+		{
+			printf("FAIL <---  (unable to create %s)\n", name);
+			errs	= 1;
+			break;
+		}
+		i = fwrite(savebuffer, 1 , sizeof(savebuffer)/20, file);
+		if (i!=sizeof(savebuffer)/20) printf("fwrite error!\n");	
+		for (l = 0; 0 && (l < samples); l++)
+		{
+			if ((l) && ((l % chans) == 0))
+			{
+				i	= fprintf(file, "\r\n");
+
+				if (i != 2)
+				{
+					printf("FAIL <---  (fprintf() failure to %s)\n", name);;
+					errs	= 1;
+					break;
+				}
+			}
+
+			i	= fprintf(file, "  %04lX", (unsigned long) (0xFFFFUL & _buffer[l]));
+			if (i != 6)
+			{
+				printf("FAIL <---  (fprintf() failure to %s)\n i=%d", name,i);
+				errs	= 1;
+				break;
+			}
+		}
+
+		fclose(file);
+
+		if (errs == 0)
+			printf("PASS  (%s)\n", name);
+
+		break;
+	}
+
+	return(errs);
+}
+
+*/
+
+/******************************************************************************
+*
+*	Function:	save_data
+*
+*	Purpose:
+*
+*		Configure the board, then capture data to a file.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*		io_mode	Use the I/O mode for data transfer.
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+int save_data(int fd, __s32 io_mode)
+{
+	__s32	chans	= 32;
+	int		errs	= 0, ix = 0;
+	pthread_t thread1, thread2;
+	int iret=0;
+	struct tm * ptm;
+  	time_t rawtime;
+	char UTCtime[164];
+	long int msec_start, msec_end;
+
+	pthread_attr_t threadAttr1, threadAttr2; // thread attributes
+	struct sched_param param;  // scheduling priority
+	int policy = SCHED_RR;  // scheduling policy - real time
+	int irc, rc;
+	rc = pthread_attr_init(&threadAttr1); /* init the attr 1*/
+	rc = pthread_attr_init(&threadAttr2); /* init the attr 2*/
+        /* Set the stack size of the thread */
+	irc = pthread_attr_setstacksize(&threadAttr1, 120*1024);
+	irc = pthread_attr_setstacksize(&threadAttr2, 120*1024);
+	irc = pthread_attr_setschedpolicy(&threadAttr2, policy);
+	param.sched_priority = 99;
+	irc = pthread_attr_setschedparam(&threadAttr2, &param);
+
+	const char*	name	= "/daqsbc/data/data.txt";
+	
+	savefile	= fopen(name, "w+b");
+
+		
+	gsc_label("Capture & Save");
+	printf("\n");
+	gsc_label_level_inc();
+	
+	errs	+= adadio_config(fd, -1);
+	errs	+= adadio_rx_io_mode(fd, -1, io_mode, NULL);
+	errs	+= adadio_ain_nrate(fd, -1, 200, NULL);
+	errs	+= _channels(fd, &chans);
+
+	gettimeofday(&tv, NULL); 
+	sec_start = tv.tv_sec;
+	usec_start = tv.tv_usec;
+	
+	printf("fd=%d\n", fd);
+	irc = pthread_create(&thread2, &threadAttr2, read_thread,(void*)&fd);
+	//iret = pthread_create( &thread1, &threadAttr1, save_thread1, (void*) &chans);
+	//iret = pthread_create( &thread1, NULL, save_thread1, (void*) &chans);  
+	/*	
+	rawtime=tv.tv_sec;
+	msec_start = tv.tv_usec;
+  	ptm = gmtime ( &rawtime );
+  	printf ( "%04d%02d%02dT%02d%02d%02d",
+    		( ptm -> tm_year + 1900 ), ptm -> tm_mon+1, ptm -> tm_mday,
+    		ptm -> tm_hour, ptm -> tm_min, ptm -> tm_sec );
+	*/
+	for ( ix =0; ix<1; ix++){
+		gettimeofday(&tv, NULL); 
+		printf("1=%f  %ld\n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000. , sizeof(_buffer1));
+		sec_start = tv.tv_sec;
+		usec_start = tv.tv_usec;
+		if( ix > 0 )pthread_mutex_lock( &mutex1 );
+		//errs	+= _read_data(fd, _buffer1);
+		read(fd, _buffer1, sizeof(_buffer1));
+		savebuffer = _buffer1;
+		pthread_mutex_unlock( &mutex1 );
+
+		gettimeofday(&tv, NULL); 
+		printf("2=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		
+		pthread_mutex_lock( &mutex2 );
+		//errs	+= _read_data(fd, _buffer2);
+		read(fd, _buffer2, sizeof(_buffer2));
+		
+		savebuffer = _buffer2;
+		pthread_mutex_unlock( &mutex2 );
+
+		gettimeofday(&tv, NULL); 
+		printf("3=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		//gettimeofday(&tv, NULL); 
+		//printf("4=%f ",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		
+		//errs	+= _save_data(fd, chans, errs);
+	}
+	//pthread_join (thread2, NULL);
+	pthread_join (thread1, NULL);
+	fclose(savefile);
+	gettimeofday(&tv, NULL); 
+	rawtime=tv.tv_sec;
+	msec_end = tv.tv_usec;
+  	ptm = gmtime ( &rawtime );
+  	printf ( "%04d%02d%02dT%02d%02d%02d",
+    		( ptm -> tm_year + 1900 ), ptm -> tm_mon+1, ptm -> tm_mday,
+    		ptm -> tm_hour, ptm -> tm_min, ptm -> tm_sec );
+	printf("\nu_sec=%ld\n",msec_end-msec_start);
+	gsc_label_level_dec();
+	return(errs);
+}
+/*
+void * save_thread(void * ptr){
+	struct timeval tv;
+
+	int chans, i;
+	int *pc;
+	long int lsec_start, lusec_start;
+	pc = (int *)( ptr);
+	chans = *pc;
+	lsec_start = sec_start;
+	lusec_start = usec_start;
+	gettimeofday(&tv, NULL); 
+	printf("s=%f ",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+	//printf("chans=%d\n",chans);
+	//_save_data(0, chans, 0);
+	//i = fwrite(_buffer, 1 , sizeof(_buffer), savefile);
+	//if (i!=sizeof(_buffer)) printf("fwrite error!\n");	
+	//printf("\nSaving done\n");
+	gettimeofday(&tv, NULL); 
+	printf("e=%f ",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+	
+}
+*/
+void * save_thread1( void *ptr){
+	int iter, i, ix;
+	int *pc;
+	long int lsec_start, lusec_start;
+	pc = (int *)( ptr);
+	iter = *pc;
+	iter = 1;
+	lsec_start = sec_start;
+	lusec_start = usec_start;
+
+	for (ix=0; ix<iter; ix++)
+	{
+		lsec_start = sec_start;
+		lusec_start = usec_start;
+		gettimeofday(&tv, NULL); 
+		printf("s0=%f \n",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+		pthread_mutex_lock( &mutex1 );
+		gettimeofday(&tv, NULL); 
+		printf("s1=%f \n",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+		i = fwrite(_buffer1, 1 , sizeof(_buffer1), savefile);
+		if (i!=sizeof(_buffer1)) printf("fwrite error!\n");
+		pthread_mutex_unlock( &mutex1 );
+		
+		gettimeofday(&tv, NULL); 
+		printf("s2=%f \n",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+		pthread_mutex_lock( &mutex2 );
+		gettimeofday(&tv, NULL); 
+		printf("s3=%f \n",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+		i = fwrite(_buffer2, 1 , sizeof(_buffer2), savefile);
+		if (i!=sizeof(_buffer2)) printf("fwrite error!\n");
+		gettimeofday(&tv, NULL); 
+		printf("s4=%f \n",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+		pthread_mutex_unlock( &mutex2 );
+		//gettimeofday(&tv, NULL); 
+		//printf("s4=%f \n",(tv.tv_sec - lsec_start)+(tv.tv_usec-lusec_start)/1000000.);
+	}
+}
+
+void * read_thread( void *ptr){
+
+	int ix, fd;
+	pthread_mutex_lock( &mutex1 );
+	fd = *((int *)( ptr));
+	//printf("fd=%d\n", fd);
+
+	for ( ix =0; ix<4; ix++){
+		gettimeofday(&tv, NULL); 
+		printf("1=%f  \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000. );
+		sec_start = tv.tv_sec;
+		usec_start = tv.tv_usec;
+		if( ix > 0 )pthread_mutex_lock( &mutex1 );
+		//errs	+= _read_data(fd, _buffer1);
+		read(fd, _buffer1, sizeof(_buffer1));
+		gettimeofday(&tv, NULL); 
+		printf("1.5=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		savebuffer = _buffer1;
+		pthread_mutex_unlock( &mutex1 );
+
+		gettimeofday(&tv, NULL); 
+		printf("2=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		
+		pthread_mutex_lock( &mutex2 );
+		//errs	+= _read_data(fd, _buffer2);
+		read(fd, _buffer2, sizeof(_buffer2));
+		
+		savebuffer = _buffer2;
+		pthread_mutex_unlock( &mutex2 );
+
+		gettimeofday(&tv, NULL); 
+		printf("3=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		//gettimeofday(&tv, NULL); 
+		//printf("4=%f ",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		
+		//errs	+= _save_data(fd, chans, errs);
+	}
+	
+}

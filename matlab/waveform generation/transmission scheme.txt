@@ -1,0 +1,15 @@
+
+do 10 times
+{
+Tx1 : probes.wav  //1.daq
+[stop 30sec]
+Tx2: probes.wav  //2.daq
+[stop 30sec]
+Tx3: probes.wav  //3.daq
+[stop 30sec]
+
+Tx1 :  mseq1.wav  + Tx2:mseq2.wav  //4.daq
+[stop 15sec]
+Tx1 : mseq1.wav + Tx3: mseq2.wav  //5.daq
+[stop 15sec] 
+}

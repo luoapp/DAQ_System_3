@@ -1,0 +1,12 @@
+#! /bin/bash
+prog=udel_disp
+../udel_wd/shmclear
+xterm -geometry 80X34+500+0 -e ./$prog &
+xterm -geometry 50X34+0+0 -e ../udel_wd/spock &
+#pid=`ps -a | grep -E $prog | sed 's/\([0-9 ]*\).*/\1/'`
+#while [ -z $pid]
+#do
+#pid=`ps -a | grep -E $prog | sed 's/\([0-9 ]*\).*/\1/'`
+#done
+#renice -5 $pid
+#ps axl | grep -E "./$prog" | grep -v "grep"

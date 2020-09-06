@@ -1,0 +1,4 @@
+#
+CC			= gcc
+udel_daq.o : udel_daq.c udel_daq.h udel_drv.h
+	${CC} $*.c

@@ -1,0 +1,336 @@
+// $URL: http://subversion:8080/svn/gsc/trunk/drivers/LINUX/ADADIO/ADADIO_Linux_3.x.x.x_GSC_DN/savedata/savedata.c $
+// $Rev: 1620 $
+// $Date: 2009-04-10 11:41:41 -0500 (Fri, 10 Apr 2009) $
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+
+#include "main.h"
+#include "adadio_dsl.h" 
+//#include "udel_daq.h"
+
+// #defines	*******************************************************************
+
+#define	_1M		(1024L * 1024L)
+#define BUFFERSIZE	(_1M  )
+
+
+
+
+// variables	***************************************************************
+ 
+//static	__u32	_buffer[BUFFERSIZE];
+__u32 *_buffer;
+//static unsigned _buffer2[BUFFERSIZE];
+struct timeval tv;
+long int sec_start, usec_start;
+
+
+
+/******************************************************************************
+*
+*	Function:	_channels
+*
+*	Purpose:
+*
+*		Check to see how many channels the board has.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*		chan	Report the number of channels here.
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+static int _channels(int fd, __s32* chans)
+{
+	char	buf[64];
+	int		errs	= 0;
+	__s32	last	= -1;
+
+	gsc_label("Input Channels");
+
+	errs	+= adadio_dsl_ioctl(fd, ADADIO_IOCTL_AIN_CHAN_LAST,	&last	);
+
+	if (errs == 0)
+	{
+		chans[0]	= last + 1;
+
+		if (last == 0)
+			sprintf(buf, "# %ld", (long) last);
+		else
+			sprintf(buf, "#s 0-%ld", (long) last);
+
+		printf(	"%ld Channel%s  (%s)\n",
+				(long) chans[0],
+				(chans[0] == 1) ? "" : "s",
+				buf);
+	}
+
+	return(errs);
+}
+
+
+
+/******************************************************************************
+*
+*	Function:	_read_data
+*
+*	Purpose:
+*
+*		Read data into the buffer.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+static int _read_data(int fd)
+{
+	int		errs;
+	long	get		= sizeof(_buffer) / 4;
+	int		got;
+
+	gsc_label("Reading");
+	got	= adadio_dsl_read(fd, _buffer, get);
+
+	if (got < 0)
+	{
+		errs	= 1;
+	}
+	else if (got != get)
+	{
+		errs	= 1;
+		printf(	"FAIL <---  (got %ld samples, requested %ld)\n",
+				(long) got,
+				(long) get);
+	}
+	else
+	{
+		errs	= 0;
+		printf(	"PASS  (%ld samples)\n",
+				(long) get);
+	}
+
+	return(errs);
+}
+
+
+
+/******************************************************************************
+*
+*	Function:	_save_data
+*
+*	Purpose:
+*
+*		Save the read data to a text file.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*		chans	The number of channels.
+*
+*		errs	have there been any errors so far?
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+static int _save_data(int fd, int chans, int errs)
+{
+	FILE*		file;
+	int			i;
+	long		l;
+	const char*	name	= "/daqsbc/data/data.txt";
+	long		samples	= sizeof(_buffer) / 4;
+
+	gsc_label("Saving");
+
+	for (;;)
+	{
+		if (errs)
+		{
+			printf("SKIPPED  (errors)\n");
+			errs	= 0;
+			break;
+		}
+
+		file	= fopen(name, "w+b");
+
+		if (file == NULL)
+		{
+			printf("FAIL <---  (unable to create %s)\n", name);
+			errs	= 1;
+			break;
+		}
+		//for (l = 0; l< samples; l++)
+		//	_buffer2[l] = _buffer[l];
+
+		//fwrite(_buffer2, 1 , sizeof(_buffer2), file);
+
+		for (l = 0; l < samples ; l++)
+		{
+			if ((l) && ((l % chans) == 0))
+			{
+				i	= fprintf(file, "\r\n");
+
+				if (i != 2)
+				{
+					printf("FAIL <---  (fprintf() failure to %s)\n", name);;
+					errs	= 1;
+					break;
+				}
+			}
+			
+			i	= fprintf(file, "  %ld", (unsigned long) (0xFFFFUL & _buffer[l]));
+			
+			if (i != 6 && 0)
+			{
+				printf("FAIL <---  (fprintf() failure to %s)\n", name);
+				errs	= 1;
+				break;
+			}
+		}
+
+		fclose(file);
+
+		if (errs == 0)
+			printf("PASS  (%s)\n", name);
+
+		break;
+	}
+
+	return(errs);
+}
+
+
+
+/******************************************************************************
+*
+*	Function:	save_data
+*
+*	Purpose:
+*
+*		Configure the board, then capture data to a file.
+*
+*	Arguments:
+*
+*		fd		The handle for the board to access.
+*
+*		io_mode	Use the I/O mode for data transfer.
+*
+*	Returned:
+*
+*		>= 0	The number of errors encounterred.
+*
+******************************************************************************/
+
+int save_data(int fd, __s32 io_mode)
+{
+	__s32	chans	= 32;
+	int		errs	= 0, ix;
+	long int ret;
+
+	char *display_name = getenv("DISPLAY"); 
+	Display* display;
+	//display = XOpenDisplay(display_name);
+  	//return;
+	
+	_buffer = malloc( BUFFERSIZE );
+	if ( _buffer == NULL ) 
+	{
+		printf("malloc error\n");
+		return(-1);
+	}
+	else
+	{
+		
+	}
+	
+
+	gsc_label("Capture & Save");
+	printf("\n");
+	gsc_label_level_inc();
+
+	errs	+= adadio_config(fd, -1);
+	errs	+= adadio_rx_io_mode(fd, -1, io_mode, NULL);
+	errs	+= adadio_ain_nrate(fd, -1, 2000, NULL);
+	errs	+= adadio_rx_io_timeout(fd, -1, 600, NULL);
+	errs	+= _channels(fd, &chans);
+	gettimeofday(&tv, NULL); 
+	sec_start = tv.tv_sec;
+	usec_start = tv.tv_usec;
+
+
+ /*       struct my_msgbuf buf;
+        int msqid;
+        key_t key;
+
+        if ((key = ftok("../kirk.c", 'B')) == -1) {
+            perror("ftok");
+            exit(1);
+        }
+
+        if ((msqid = msgget(key, 0644 | IPC_CREAT)) == -1) {
+            perror("msgget");
+            exit(1);
+        }
+		buf.mtype = 1;
+*/
+	for( ix =0; ix<10; ix++)
+	{
+		//gettimeofday(&tv, NULL); 
+		//printf("1 +=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+		//sec_start = tv.tv_sec;
+		//usec_start = tv.tv_usec;
+
+		// //errs	+= _read_data(fd);
+		//ret = read(fd, _buffer, BUFFERSIZE);
+		//printf("req=%ld ret=%ld\n",sizeof(_buffer), ret);
+		//sleep(1);
+		//buf.mtext[0] = ix++;
+		//buf.mtext[1] = '\0';
+        	//if (msgsnd(msqid, (struct msgbuf *)&buf, sizeof(buf), 0) == -1)
+            	//	perror("msgsnd");
+
+
+	}
+
+        if (msgctl(msqid, IPC_RMID, NULL) == -1) {
+            perror("msgctl");
+            exit(1);
+        }
+
+	gettimeofday(&tv, NULL); 
+	printf("2 +=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+	sec_start = tv.tv_sec;
+	usec_start = tv.tv_usec;
+	//errs	+= _save_data(fd, chans, errs);
+	gettimeofday(&tv, NULL); 
+	printf("3 +=%f \n",(tv.tv_sec - sec_start)+(tv.tv_usec-usec_start)/1000000.);
+	gsc_label_level_dec();
+	return(errs);
+}
+
+
+

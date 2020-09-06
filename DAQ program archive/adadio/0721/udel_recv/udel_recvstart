@@ -1,0 +1,26 @@
+#! /bin/bash
+
+i_nchans=5		## number of input channels
+i_length=10		## nominal length of recording, in seconds
+i_sr=80000		## sampling rate
+i_vfs=10		## full scale input range, (ignored by ADADIO board, always 10)
+o_vfs=10		## full scale output range
+
+x_ch=4			## channel to monitor, start from 0
+x_disp=1		## display on screen ?
+x_hd=1			## write to hard drive ?
+
+
+./udel_shmclear
+xterm -geometry 50X30+500+0 -e ./udel_input i.nchans=$i_nchans i.length=$i_length i.sr=$i_sr i.vfs=$i_vfs o.vfs=$o_vfs &
+xterm -geometry 50X30+0+0 -e ./udel_recv i.nchans=$i_nchans i.length=$i_length i.sr=$i_sr i.vfs=$i_vfs o.vfs=$o_vfs x.ch=$x_ch x.disp=$x_disp x.hd=$x_hd &
+
+
+
+#pid=`ps -a | grep -E $prog | sed 's/\([0-9 ]*\).*/\1/'`
+#while [ -z $pid]
+#do
+#pid=`ps -a | grep -E $prog | sed 's/\([0-9 ]*\).*/\1/'`
+#done
+#renice -5 $pid
+#ps axl | grep -E "./$prog" | grep -v "grep"

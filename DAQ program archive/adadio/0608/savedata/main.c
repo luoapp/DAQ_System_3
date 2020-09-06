@@ -1,0 +1,170 @@
+// $URL: http://subversion:8080/svn/gsc/trunk/drivers/LINUX/ADADIO/ADADIO_Linux_3.x.x.x_GSC_DN/savedata/main.c $
+// $Rev: 1620 $
+// $Date: 2009-04-10 11:41:41 -0500 (Fri, 10 Apr 2009) $
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include "main.h"
+#include "udel_daq.h"
+ 
+
+#define	_1M		(1024L *1024L)
+#define disp_buffer_size	_1M
+
+
+// variables	***************************************************************
+
+__u32	_buffer[_1M];
+static	int		_index			= 0;
+static	__s32	_io_mode		= GSC_IO_MODE_PIO;
+static	long	_minute_limit	= 0;
+UDELxwin uxwin;
+float rdata[_1M];
+
+
+/******************************************************************************
+*
+*	Function:	main
+*
+*	Purpose:
+*
+*		Control the overall flow of the application.
+*
+*	Arguments:
+*
+*		argc			The number of command line arguments.
+*
+*		argv			The list of command line arguments.
+*
+******************************************************************************/
+
+int main(int argc, char *argv[])
+{
+	int		errs;
+	time_t	exec		= time(NULL);
+	int		fd			= 0;
+	int		qty;
+	int		ret			= EXIT_FAILURE;
+	time_t	t_limit;
+	__s32 chans = 32;
+	
+//-------------------------------------------------------------------------------
+	UDELctl uctl;
+	udelctlinit( & uctl );
+	DaqBoard board = { { 0 } };
+	udelargparser(argc, argv, &board, &uctl);
+
+//--------------------------------------------------------------------------------- 
+	udelxwininit( &uxwin);
+	//return;
+	Display* display;		/* pointer to X Display structure.           */
+	int screen_num;		/* number of screen to place the window on.  */
+	Window win;			/* pointer to the newly created window.      */
+	unsigned int display_width,
+	display_height;	/* height and width of the X display.        */
+	unsigned int win_width,
+	win_height;	/* height and width for the new window.      */
+	char *display_name = getenv("DISPLAY");  /* address of the X display.      */
+	GC gc;			/* GC (graphics context) used for drawing    */
+				/*  in our window.			     */
+	//  XFontStruct* font_info;       /* Font structure, used for drawing text.    */
+	//  char* font_name = "*-helvetica-*-12-*"; /* font to use for drawing text.   */
+	XColor red,  blue,  green, white, black;
+	Colormap screen_colormap;     
+//----------------------------------------------------------------------------------
+  if( uctl.flag_disp && 0)
+{
+   
+
+  /* open connection with the X server. */
+  display = XOpenDisplay(display_name);
+  if (display == NULL) {
+    fprintf(stderr, "%s: cannot connect to X server '%s'\n",
+            argv[0], display_name);
+    exit(1);
+  }
+
+  /* get the geometry of the default screen for our display. */
+  screen_num = DefaultScreen(display);
+  display_width = DisplayWidth(display, screen_num);
+  display_height = DisplayHeight(display, screen_num);
+
+  /* make the new window occupy 1/9 of the screen's size. */
+  win_width = (display_width / 2);
+  win_height = (display_height / 3);
+  //printf("window width - '%d'; height - '%d'\n", win_width, win_height);
+ 
+  /* create a simple window, as a direct child of the screen's   */
+  /* root window. Use the screen's white color as the background */
+  /* color of the window. Place the new window's top-left corner */
+  /* at the given 'x,y' coordinates.                             */
+  win = create_simple_window(display, win_width, win_height, 0, 0);
+
+  /* allocate a new GC (graphics context) for drawing in the window. */
+  gc = create_gc(display, win, 0);
+  XSync(display, False);
+  screen_colormap = DefaultColormap(display, DefaultScreen(display));
+  XAllocNamedColor(display, screen_colormap, "red", &red, &red);
+  XAllocNamedColor(display, screen_colormap, "white", &white, &white);
+  XAllocNamedColor(display, screen_colormap, "black", &black, &black);
+  XAllocNamedColor(display, screen_colormap, "green", &green, &green);
+  XAllocNamedColor(display, screen_colormap, "blue", &blue, &blue);
+  XSetLineAttributes(display, gc, 1, LineSolid, CapRound, JoinRound); 
+
+  }
+
+
+//-----------------------------------------------------------------------
+	gsc_id_host();
+	t_limit	= exec + (_minute_limit * 60);
+	qty		= gsc_count_boards(ADADIO_BASE_NAME);
+	errs	= gsc_select_1_board(qty, &_index);
+	
+	if ((qty <= 0) || (errs))
+	{
+		printf("ERROR: Unable to allocate device.\n");
+		return EXIT_FAILURE;
+	}
+	gsc_label("Accessing Board Index");
+	printf("%d\n", _index);
+	fd	= gsc_dev_open(_index, ADADIO_BASE_NAME);
+
+	if (fd == -1)
+	{
+		errs	= 1;
+		printf(	"ERROR: Unable to access device %d.", _index);
+	}
+
+	if (errs == 0)
+	{
+		ret	= EXIT_SUCCESS;
+		errs	+= gsc_id_driver(fd, ADADIO_BASE_NAME);
+		errs	+= adadio_id_board(fd, -1, NULL);
+		errs	+= adadio_config(fd, -1);
+		errs	+= adadio_rx_io_mode(fd, -1, _io_mode, NULL);
+		errs	+= adadio_ain_nrate(fd, -1, 100, NULL);
+		errs	+= _channels(fd, &chans);
+		//errs	+= adadio_dsl_read(fd, _buffer, sizeof(_buffer));
+		errs	+= _read_data(fd);		
+		errs	+= _save_data(fd, chans, errs);
+
+
+	}
+
+	gsc_dev_close(_index, fd);
+	udelraw2float ( _buffer, rdata, _1M, 10);
+	int ix;
+	for (ix=0; ix<16; ix++)
+		printf("%f ",rdata[ix*800]);
+	udeldrawdata(&uxwin, &uctl, &board, rdata, _1M);
+	if ( uctl.flag_disp) { getchar(); }
+  
+	return(ret);
+}
+
+
+

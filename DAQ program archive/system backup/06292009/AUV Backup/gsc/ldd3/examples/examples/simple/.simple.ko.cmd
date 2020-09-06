@@ -1,0 +1,1 @@
+cmd_/daqsbc/gsc/ldd3/examples/examples/simple/simple.ko := ld -m elf_i386 -r -m elf_i386   -o /daqsbc/gsc/ldd3/examples/examples/simple/simple.ko /daqsbc/gsc/ldd3/examples/examples/simple/simple.o /daqsbc/gsc/ldd3/examples/examples/simple/simple.mod.o

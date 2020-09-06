@@ -1,0 +1,48 @@
+gsc_util_close.o: gsc_util_close.c gsc_utils.h 
+gsc_util_count.o: gsc_util_count.c gsc_utils.h 
+gsc_util_id.o: gsc_util_id.c gsc_utils.h 
+gsc_util_kbhit.o: gsc_util_kbhit.c gsc_utils.h 
+gsc_util_label.o: gsc_util_label.c gsc_utils.h 
+gsc_util_open.o: gsc_util_open.c gsc_utils.h 
+gsc_util_reg.o: gsc_util_reg.c ../driver/gsc_common.h gsc_utils.h 
+gsc_util_reg_plx9080.o: gsc_util_reg_plx9080.c ../driver/gsc_pci9080.h ../driver/gsc_common.h gsc_utils.h 
+gsc_util_select.o: gsc_util_select.c gsc_utils.h 
+util_auto_calibrate.o: util_auto_calibrate.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_buffer_clear.o: util_buffer_clear.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_buffer_mode.o: util_buffer_mode.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_buffer_over_data.o: util_buffer_over_data.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_buffer_over_frame.o: util_buffer_over_frame.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_buffer_size.o: util_buffer_size.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_buffer_status.o: util_buffer_status.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_burst_ready.o: util_burst_ready.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_burst_trigger.o: util_burst_trigger.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_burst_trig_src.o: util_burst_trig_src.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_channel_sel.o: util_channel_sel.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_clock_enable.o: util_clock_enable.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_clock_osc_src.o: util_clock_osc_src.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_clock_ready.o: util_clock_ready.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_clock_src.o: util_clock_src.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_clock_sw.o: util_clock_sw.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_config.o: util_config.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_data_format.o: util_data_format.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_fref.o: util_fref.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_fsamp.o: util_fsamp.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_ground_sense.o: util_ground_sense.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_id.o: util_id.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_initialize.o: util_initialize.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_irq_enable.o: util_irq_enable.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_irq_sel.o: util_irq_sel.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_irq_state.o: util_irq_state.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_load_ready.o: util_load_ready.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_load_request.o: util_load_request.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_nclk.o: util_nclk.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_nrate.o: util_nrate.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_output_mode.o: util_output_mode.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_query.o: util_query.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_reg.o: util_reg.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_sample_mode.o: util_sample_mode.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_tx_io_mode.o: util_tx_io_mode.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_tx_io_over_data.o: util_tx_io_over_data.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_tx_io_over_frame.o: util_tx_io_over_frame.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_tx_io_timeout.o: util_tx_io_timeout.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 
+util_xcvr_type.o: util_xcvr_type.c ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 16ao20_utils.h ../driver/16ao20.h gsc_utils.h 

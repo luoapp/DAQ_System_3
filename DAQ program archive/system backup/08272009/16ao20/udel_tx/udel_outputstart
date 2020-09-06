@@ -1,0 +1,10 @@
+#! /bin/bash
+
+
+o_vfs=10			## full scale output range
+datafile=c4_3.daq	## data file
+o_sr=40000			## output sampling rate
+o_nchans=4			## number of channel
+
+./udel_output o.vfs=$o_vfs o.sr=$o_sr o.nchans=$o_nchans $datafile&
+

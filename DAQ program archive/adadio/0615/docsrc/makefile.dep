@@ -1,0 +1,4 @@
+close.o: ../docsrc/close.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 
+ioctl.o: ../docsrc/ioctl.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 
+open.o: ../docsrc/open.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 
+read.o: ../docsrc/read.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h 

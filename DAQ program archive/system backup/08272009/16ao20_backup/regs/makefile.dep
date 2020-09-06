@@ -1,0 +1,4 @@
+main_menu.o: main_menu.c main.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../utils/16ao20_utils.h ../driver/16ao20.h ../utils/gsc_utils.h 
+main.o: main.c main.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../utils/16ao20_utils.h ../driver/16ao20.h ../utils/gsc_utils.h 
+menu.o: menu.c main.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../utils/16ao20_utils.h ../driver/16ao20.h ../utils/gsc_utils.h 
+reg.o: reg.c main.h ../driver/16ao20.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../docsrc/16ao20_dsl.h ../driver/16ao20.h ../utils/16ao20_utils.h ../driver/16ao20.h ../utils/gsc_utils.h 

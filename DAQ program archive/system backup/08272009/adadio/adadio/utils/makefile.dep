@@ -1,0 +1,39 @@
+gsc_util_close.o: gsc_util_close.c gsc_utils.h 
+gsc_util_count.o: gsc_util_count.c gsc_utils.h 
+gsc_util_id.o: gsc_util_id.c gsc_utils.h 
+gsc_util_kbhit.o: gsc_util_kbhit.c gsc_utils.h 
+gsc_util_label.o: gsc_util_label.c gsc_utils.h 
+gsc_util_open.o: gsc_util_open.c gsc_utils.h 
+gsc_util_reg.o: gsc_util_reg.c ../driver/gsc_common.h gsc_utils.h 
+gsc_util_reg_plx9080.o: gsc_util_reg_plx9080.c ../driver/gsc_pci9080.h ../driver/gsc_common.h gsc_utils.h 
+gsc_util_select.o: gsc_util_select.c gsc_utils.h 
+util_ain_buf_clear.o: util_ain_buf_clear.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_ain_buf_size.o: util_ain_buf_size.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_ain_buf_sts.o: util_ain_buf_sts.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_ain_chan_last.o: util_ain_chan_last.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_ain_mode.o: util_ain_mode.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_ain_nrate.o: util_ain_nrate.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_ain_trigger.o: util_ain_trigger.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_aout_ch_x_write.o: util_aout_ch_x_write.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_aout_enable.o: util_aout_enable.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_aout_strobe_enable.o: util_aout_strobe_enable.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_aout_strobe.o: util_aout_strobe.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_auto_calibrate.o: util_auto_calibrate.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_config.o: util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_data_format.o: util_data_format.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_dio_pin_read.o: util_dio_pin_read.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_dio_pin_write.o: util_dio_pin_write.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_dio_port_dir.o: util_dio_port_dir.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_dio_port_read.o: util_dio_port_read.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_dio_port_write.o: util_dio_port_write.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_fsamp.o: util_fsamp.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_id.o: util_id.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_initialize.o: util_initialize.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_irq_enable.o: util_irq_enable.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_irq_sel.o: util_irq_sel.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_irq_status.o: util_irq_status.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_loopback_channel.o: util_loopback_channel.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_query.o: util_query.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_reg.o: util_reg.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_rx_io_mode.o: util_rx_io_mode.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 
+util_rx_io_timeout.o: util_rx_io_timeout.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h adadio_utils.h ../driver/adadio.h gsc_utils.h 

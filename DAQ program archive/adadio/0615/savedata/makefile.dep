@@ -1,0 +1,52 @@
+main.o: main.c main.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../docsrc/adadio_dsl.h ../driver/adadio.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h ../utils/gsc_utils.h ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+savedata.o: savedata.c main.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../docsrc/adadio_dsl.h ../driver/adadio.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h ../utils/gsc_utils.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+udel_daq.o: ../udel_comm/udel_daq.c ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 
+util_config.o: ../utils/util_config.c ../docsrc/adadio_dsl.h ../driver/adadio.h ../driver/gsc_common.h ../driver/gsc_pci9080.h ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h 

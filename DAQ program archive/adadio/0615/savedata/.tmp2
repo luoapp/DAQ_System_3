@@ -1,0 +1,4 @@
+main.o: main.c main.h ../driver/adadio.h ../driver/gsc_common.h
+  ../driver/gsc_pci9080.h ../docsrc/adadio_dsl.h ../driver/adadio.h
+  ../utils/adadio_utils.h ../driver/adadio.h ../utils/gsc_utils.h
+  ../utils/gsc_utils.h ../udel_comm/udel_daq.h ../udel_comm/udel_drv.h
